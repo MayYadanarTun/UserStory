@@ -1,0 +1,31 @@
+extend type Query{
+  employees(page:Int = 1, count: Int = 15): [Employee!]! @field(resolver: "EmployeeQuery@paginate") @guard
+   employee(id: ID @eq): Employee @find @guard
+}
+extend type Mutation{
+  
+  createEmployee(
+    name: String!
+    email: String! @rules(apply:["email","unique:employees"])
+    ): Employee! @create @guard
+
+  updateEmployee(
+    id:ID!
+    name:String
+    email:String @rules(apply:["email","unique:employees"])
+    ): Employee! @update @guard
+
+  deleteEmployee(id:ID!): Employee @delete @guard
+
+  upsertEmployee(
+    id:ID!
+    name:String!
+    email:String! @rules(apply:["email","unique:employees"])
+  ): Employee! @upsert @guard
+}
+
+type Employee{
+  id: ID
+  name: String
+  email: String
+}

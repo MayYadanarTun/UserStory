@@ -1,0 +1,11 @@
+type Mutation {
+    "Log in to a new session and get the token"
+    login(email: String!,password:String!) :String@field(resolver: "Login@resolve")
+    
+    "Log out from the current session, showing the user one last time."
+    logout: String @guard
+}
+
+type Query{
+    me:User! @guard @auth
+}
